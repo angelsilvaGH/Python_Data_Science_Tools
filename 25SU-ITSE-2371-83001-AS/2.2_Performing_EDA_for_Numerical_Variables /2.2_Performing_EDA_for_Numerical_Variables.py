@@ -45,11 +45,12 @@ plt.savefig(f"{ageIntake.replace(' ', '_')}_single.png")
 
 # looping through each numerical value index ## ("Age upon Intake Days" & "Age upon Outcome Days") ##
 for c in numerical_values:
-    df[c].plot.hist(bins=5)
+    (df[c]/365).plot.hist(bins=20)
     plt.title(c)
-    plt.xlabel("Age (Days)")
+    plt.xlabel("Age (years)")
     plt.ylabel("Frequency")
     plt.savefig(f"{c.replace(' ', '_')}.png")
+    plt.clf()
     #plt.show() # I want to avoid opening them while running, saving the data as a png file to view after
 
 
@@ -57,5 +58,5 @@ for c in numerical_values:
 # looping through numerical_values where, intake & outcome data is saved
 for c in numerical_values:
     print("\n")
-    print(c, "min & max age (days)")
+    print(c, "min & max age (in years)")
     print("min:", df[c].min()/365, "max:", df[c].max()/365)

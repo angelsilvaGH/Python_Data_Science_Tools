@@ -2,6 +2,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import MaxNLocator
 from sklearn.impute import SimpleImputer
 # import the dataset csv file with the required data
 df= pd.read_csv("review_dataset.csv")
@@ -33,30 +34,44 @@ numerical_values= ["Age upon Intake Days", "Age upon Outcome Days"] # using the 
 model_target= "Outcome Type"
 
 
-# I want a visual data graph, ## ONLY "Age upon Intake Days" ##
+# I want a visual data graph, ## ONLY "Age upon Intake Days" ## TEST/practice
 ageIntake= "Age upon Intake Days"
-df[ageIntake].plot.hist(bins=5)
-plt.title("Distribution of Age upon Intake Days")
-plt.xlabel("Age (Days)")
+(df[ageIntake]/365).plot.hist(bins=25)
+plt.title("Distribution of Age upon Intake years")
+plt.xlabel("Age (years)")
+plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
 plt.ylabel("Frequency")
+plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 plt.savefig(f"{ageIntake.replace(' ', '_')}_single.png")
-#plt.show() # I want to avoid opening them while running, saving the data as a png file to view after
+plt.clf()
+#plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
 
 # looping through each numerical value index ## ("Age upon Intake Days" & "Age upon Outcome Days") ##
 for c in numerical_values:
-    (df[c]/365).plot.hist(bins=20)
-    plt.title(c)
+    (df[c]/365).plot.hist(bins=25)
+
+    title= c.replace("Days", "in Years")
+    plt.title(f"Distribution of {title}")
+
     plt.xlabel("Age (years)")
+    plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
+
     plt.ylabel("Frequency")
+    plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
+
     plt.savefig(f"{c.replace(' ', '_')}.png")
     plt.clf()
-    #plt.show() # I want to avoid opening them while running, saving the data as a png file to view after
+    #plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
 
 # I want to see the max and min for each index in numerical value (intake & outcome)
 # looping through numerical_values where, intake & outcome data is saved
 for c in numerical_values:
-    print("\n")
-    print(c, "min & max age (in years)")
+    title = c.replace("Days", "in Years")
+    print("\n", title, ", min & max age:")
     print("min:", df[c].min()/365, "max:", df[c].max()/365)
+
+# using value_counts to see numerical data range
+for c in numerical_values:
+    print("\n", (df[c]/365).clip(lower=0).value_counts(bins=25, sort=False))

@@ -13,20 +13,20 @@ print("\nAustin Animal Center Shelter Intakes and Outcomes dataset Analysis\n")
 
 
 # number of rows (95485) and columns (13), respectively
-print("The shape of the dataset is:", df.shape, "\n")
+print(f"The shape of the dataset is: {df.shape}\n")
 
 
 # I want to see the data type and non-null values for each column
-print(df.info(), "\n")
+print(f"{df.info()}\n")
 
 
 # summary of statistics or the numerical columns, "std"= standard deviation from the mean, "mean" is average, "min" is...
 #...minimum value in the dataset, "max" is the maximum value in the dataset.
-print(df.describe(), "\n")
+print(f"{df.describe()}\n")
 
 
 # printing the name of all the columns
-print("\nColumns from dataset:", df.columns, "\n")
+print(f"\nColumns from dataset: {df.columns}\n")
 
 
 # making a list of the features that I want to use and set it to a variable I can later call.
@@ -35,14 +35,14 @@ model_target= "Outcome Type"
 
 
 # I want a visual data graph, ## ONLY "Age upon Intake Days" ## TEST/practice
-ageIntake= "Age upon Intake Days"
-(df[ageIntake]/365).plot.hist(bins=25)
+intakeAge= "Age upon Intake Days"
+(df[intakeAge]/365).plot.hist(bins=25)
 plt.title("Distribution of Age upon Intake years")
 plt.xlabel("Age (years)")
 plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
 plt.ylabel("Frequency")
 plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
-plt.savefig(f"{ageIntake.replace(' ', '_')}_single.png")
+plt.savefig(f"{intakeAge.replace(' ', '_')}_single.png")
 plt.clf()
 #plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
@@ -69,25 +69,20 @@ for c in numerical_features:
 # looping through numerical_values where, where intake & outcome data is saved
 for c in numerical_features:
     title= c.replace("Days", "in Years")
-    print("\n", title, ", min & max age:")
-    print("min:", df[c].min()/365, "max:", df[c].max()/365, "\n")
+    print(f"\n{title}, min & max age:")
+    print(f"min: {df[c].min()/365} max: {df[c].max()/365}")
 # showcasing the maximum/minimum values for numerical features in years
 
 
-# using value_counts to see numerical data range
+# using value_counts to see numerical data range intervals
 for c in numerical_features:
     title= c.replace("Days", "in Years")
-    print("\n", title)
-    data_years = df[c]/365
-    bins = np.linspace(0, 25, 30)
-    counts = data_years.value_counts(bins=bins, sort=False)
-
-    for interval, count in counts.items():
-        print(f"{interval}: {count}")
-# TEST
+    print(f"\n{title}, (interval) : (amount of data in the interval)")
+    print((df[c]/365).value_counts(bins=30, sort=False))
+########
 
 
-# TEST
+# want to see where percentage of data falls under, plus removing outliers
 for c in numerical_features:
     print("\nDropped from feature:", c)
     # Calculate the upper and lower quartile values
@@ -96,14 +91,13 @@ for c in numerical_features:
 
     # Calculate the IQR
     IQR= Q3 - Q1
-    print("Q1: ", Q1, ", Q3: ", Q3, ", IQR: ", IQR)
+    print(f"Q1 (25% of data falls below): {Q1}\nQ3 (75% of data falls below): {Q3} or {(Q3/365):.2f} years\nIQR: {IQR}")
 
-    lower_bound= Q1-1.5*IQR
+    lower_bound= max(0, Q1-1.5*IQR)    # age cannot be negative, if below 0, it will return 0.
     upper_bound= Q3+1.5*IQR
+    print(f"Outlier Range must fall outside: ({lower_bound}, {upper_bound} or {(upper_bound/365):.2f} years)")
 
-    print(Q1 - 1.5 * IQR, Q3 + 1.5 * IQR)
-
-    # Drop values below Q1 - 1.5 IQR and beyond Q3 + 1.5 IQR
+    # Drop values below Q1 - 1.5*IQR and beyond Q3 + 1.5*IQR
     outliers = df[(df[c]>upper_bound) | (df[c]<lower_bound)].index
     df.drop(outliers, inplace=True)
-# TEST
+########

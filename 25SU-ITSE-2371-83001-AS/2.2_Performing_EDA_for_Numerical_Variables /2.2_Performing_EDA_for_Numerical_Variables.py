@@ -26,7 +26,7 @@ print(df.describe(), "\n")
 
 
 # printing the name of all the columns
-print("\nColumns for dataframe:", df.columns)
+print("\nColumns from dataset:", df.columns, "\n")
 
 
 # making a list of the features that I want to use and set it to a variable I can later call.
@@ -68,10 +68,19 @@ for c in numerical_values:
 # I want to see the max and min for each index in numerical value (intake & outcome)
 # looping through numerical_values where, intake & outcome data is saved
 for c in numerical_values:
-    title = c.replace("Days", "in Years")
+    title= c.replace("Days", "in Years")
     print("\n", title, ", min & max age:")
-    print("min:", df[c].min()/365, "max:", df[c].max()/365)
+    print("min:", df[c].min()/365, "max:", df[c].max()/365, "\n")
 
 # using value_counts to see numerical data range
 for c in numerical_values:
-    print("\n", (df[c]/365).clip(lower=0).value_counts(bins=25, sort=False))
+    title= c.replace("Days", "in Years")
+    print("\n", title)
+    data_years = df[c]/365
+    bins = np.linspace(0, 25, 30)
+    counts = data_years.value_counts(bins=bins, sort=False)
+
+    for interval, count in counts.items():
+        print(f"{interval}: {count}")
+
+#

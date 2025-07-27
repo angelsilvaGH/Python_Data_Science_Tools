@@ -66,11 +66,13 @@ for c in numerical_features:
 
 
 # I want to see the max and min for each index in numerical value (intake & outcome)
-# looping through numerical_values where, intake & outcome data is saved
+# looping through numerical_values where, where intake & outcome data is saved
 for c in numerical_features:
     title= c.replace("Days", "in Years")
     print("\n", title, ", min & max age:")
     print("min:", df[c].min()/365, "max:", df[c].max()/365, "\n")
+# showcasing the maximum/minimum values for numerical features in years
+
 
 # using value_counts to see numerical data range
 for c in numerical_features:
@@ -82,24 +84,26 @@ for c in numerical_features:
 
     for interval, count in counts.items():
         print(f"{interval}: {count}")
+# TEST
 
 
-#
+# TEST
 for c in numerical_features:
-    title= c.replace("Days", "in Years")
-    print("\nDropped from feature:", title)
+    print("\nDropped from feature:", c)
     # Calculate the upper and lower quartile values
     Q1= df[c].quantile(0.25)
     Q3= df[c].quantile(0.75)
 
     # Calculate the IQR
-    IQR = Q3 - Q1
+    IQR= Q3 - Q1
     print("Q1: ", Q1, ", Q3: ", Q3, ", IQR: ", IQR)
+
+    lower_bound= Q1-1.5*IQR
+    upper_bound= Q3+1.5*IQR
 
     print(Q1 - 1.5 * IQR, Q3 + 1.5 * IQR)
 
     # Drop values below Q1 - 1.5 IQR and beyond Q3 + 1.5 IQR
-    dropIndexes = df[df[c] > Q3 + 1.5 * IQR].index
-    df.drop(dropIndexes, inplace=True)
-    dropIndexes = df[df[c] < Q1 - 1.5 * IQR].index
-    df.drop(dropIndexes, inplace=True)
+    outliers = df[(df[c]>upper_bound) | (df[c]<lower_bound)].index
+    df.drop(outliers, inplace=True)
+# TEST

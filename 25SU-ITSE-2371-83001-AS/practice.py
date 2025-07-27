@@ -7,6 +7,5 @@ from sklearn.impute import SimpleImputer
 df= pd.read_csv("review_dataset.csv")
 # Print the dataset shape (rows/columns)
 print("The shape of the dataset is:", df.shape)
-print("TEST")
-print("TEST2")
-print("test3")
+print(df.info())
+print(df.describe())

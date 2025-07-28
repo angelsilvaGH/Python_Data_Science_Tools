@@ -17,6 +17,7 @@ print(f"The shape of the dataset is: {df.shape}\n")
 
 
 # I want to see the data type and non-null values for each column
+print("Info function:")
 print(f"{df.info()}\n")
 
 
@@ -91,13 +92,65 @@ for c in numerical_features:
 
     # Calculate the IQR
     IQR= Q3 - Q1
-    print(f"Q1 (25% of data falls below): {Q1}\nQ3 (75% of data falls below): {Q3} or {(Q3/365):.2f} years\nIQR: {IQR}")
+    print(f"Q1 (25% of data falls below): {Q1} Days\nQ3 (75% of data falls below): {Q3} Days or {(Q3/365):.2f} Year(s)\nIQR: {IQR} Days")
 
     lower_bound= max(0, Q1-1.5*IQR)    # age cannot be negative, if below 0, it will return 0.
     upper_bound= Q3+1.5*IQR
-    print(f"Outlier Range must fall outside: ({lower_bound}, {upper_bound} or {(upper_bound/365):.2f} years)")
+    print(f"Outlier Range must fall outside: ({lower_bound} Days, ({upper_bound} Days or {(upper_bound/365):.2f} years))")
 
     # Drop values below Q1 - 1.5*IQR and beyond Q3 + 1.5*IQR
     outliers = df[(df[c]>upper_bound) | (df[c]<lower_bound)].index
     df.drop(outliers, inplace=True)
 ########
+
+
+# dropping values in the upper 10%
+for c in numerical_features:
+    # Drop values beyond 90% of max()
+    threshold= df[c].quantile(0.90)
+    outliers = df[df[c] > threshold].index
+    df.drop(outliers, inplace=True)
+########
+
+
+# re-calculating value_counts()
+for c in numerical_features:
+    print(f"\n{c}, (interval) : (amount of data in the interval)")
+    print(df[c].value_counts(bins=10, sort=False))
+#######
+
+
+# Plot updated histograms with 100 bins for each numerical feature (UPDATED)
+for c in numerical_features:
+    (df[c]).plot.hist(bins=100)
+    plt.title(c)
+    plt.xlabel("Age (days)")
+    #plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
+
+    plt.ylabel("Frequency")
+    #plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
+
+    plt.savefig(f"{c.replace(' ', '_')}_updated.png")
+    plt.clf()
+    #plt.show()
+######
+
+
+# Generate random data and make a scatterplot of it
+# Generate random data
+x = np.random.rand(500)
+y = np.random.rand(500)
+
+# Plot the data
+plt.scatter(x, y)
+plt.title("ScatterPlot")
+plt.xlabel("input")
+    #plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
+
+plt.ylabel("output")
+    #plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
+
+plt.savefig("scatterplot.png")
+plt.clf()
+#plt.show()
+######

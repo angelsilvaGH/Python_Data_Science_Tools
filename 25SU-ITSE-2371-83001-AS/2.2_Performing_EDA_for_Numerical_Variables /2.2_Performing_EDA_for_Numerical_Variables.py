@@ -38,6 +38,7 @@ model_target= "Outcome Type"
 # I want a visual data graph, ## ONLY "Age upon Intake Days" ## TEST/practice
 intakeAge= "Age upon Intake Days"
 (df[intakeAge]/365).plot.hist(bins=25)
+# plot the Data, boundaries
 plt.title("Distribution of Age upon Intake years")
 plt.xlabel("Age (years)")
 plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
@@ -99,7 +100,7 @@ for c in numerical_features:
     print(f"Outlier Range must fall outside: ({lower_bound} Days, ({upper_bound} Days or {(upper_bound/365):.2f} years))")
 
     # Drop values below Q1 - 1.5*IQR and beyond Q3 + 1.5*IQR
-    outliers = df[(df[c]>upper_bound) | (df[c]<lower_bound)].index
+    outliers= df[(df[c]>upper_bound) | (df[c]<lower_bound)].index
     df.drop(outliers, inplace=True)
 ########
 
@@ -108,7 +109,7 @@ for c in numerical_features:
 for c in numerical_features:
     # Drop values beyond 90% of max()
     threshold= df[c].quantile(0.90)
-    outliers = df[df[c] > threshold].index
+    outliers= df[df[c] > threshold].index
     df.drop(outliers, inplace=True)
 ########
 
@@ -136,21 +137,30 @@ for c in numerical_features:
 ######
 
 
-# Generate random data and make a scatterplot of it
+# Generating random data, testing out scatter plot function
 # Generate random data
-x = np.random.rand(500)
-y = np.random.rand(500)
-
+x= np.random.rand(500)
+y= np.random.rand(500)
 # Plot the data
 plt.scatter(x, y)
 plt.title("ScatterPlot")
 plt.xlabel("input")
-    #plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
-
 plt.ylabel("output")
-    #plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
-
-plt.savefig("scatterplot.png")
+plt.savefig("random_scatterplot.png")
 plt.clf()
 #plt.show()
 ######
+
+
+# scatter plotting numerical_features
+x= df[numerical_features[0]]
+y= df[numerical_features[1]]
+# giving data boundaries
+plt.scatter(x, y)
+plt.title(numerical_features[0] + " vs " + numerical_features[1])
+plt.xlabel(numerical_features[0])
+plt.ylabel(numerical_features[1])
+plt.savefig("num_feat_scatterplot.png")
+plt.clf()
+#plt.show()
+########

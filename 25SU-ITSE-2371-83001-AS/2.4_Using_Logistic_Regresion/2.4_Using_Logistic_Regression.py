@@ -22,18 +22,15 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 ########## 1.3. Data processing¶
 df= pd.read_csv("../2_shared_data/review_dataset.csv")
 
+print("Reviewing the dataset for the Austin animal shelter...\n")
 print("The shape of the dataset is:", df.shape)
+print(f"Columns for dataset:\n{df.columns}")
 ##########
 
 
 
 ##########
-print(f"\n{df.columns}")
-##########
-
-
-
-##########
+# separating data type, according to the columns of the dataset
 numerical_features= ["Age upon Intake Days", "Age upon Outcome Days"]
 categorical_features= ["Sex upon Outcome", "Intake Type", "Intake Condition", "Pet Type", "Sex upon Intake"]
 text_features= ["Found Location", "Breed", "Color"]
@@ -57,7 +54,7 @@ for c in numerical_features:
     plt.ylabel("Frequency")
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"2.3{c.replace(' ', '_')}.png")
+    plt.savefig(f"2_4{c.replace(' ', '_')}_valueCounts.png")
     plt.clf()
     #plt.show()
 ##########

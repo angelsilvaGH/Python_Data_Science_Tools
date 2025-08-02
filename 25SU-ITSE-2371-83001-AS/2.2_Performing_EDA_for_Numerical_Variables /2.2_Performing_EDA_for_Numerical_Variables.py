@@ -36,16 +36,20 @@ model_target= "Outcome Type"
 
 
 # I want a visual data graph, ## ONLY "Age upon Intake Days" ## TEST/practice
-intakeAge= "Age upon Intake Days"
-(df[intakeAge]/365).plot.hist(bins=25)
-title= intakeAge.replace("Days", "in Years")
+AuI= "Age upon Intake Days"
+(df[AuI]/365).plot.hist(bins=25)
+
+title= AuI.replace("Age upon Intake Days", "AuIY")
 # plot the Data, boundaries
-plt.title("Distribution of Age upon Intake years")
+plt.title(f"Distribution of {title}")
+
 plt.xlabel("Age (years)")
 plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
+
 plt.ylabel("Frequency")
 plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
-plt.savefig(f"2.2{title.replace(' ', '_')}_single.png")
+
+plt.savefig(f"2.2{title}_single_hist.png")
 plt.clf()
 #plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
@@ -54,7 +58,7 @@ plt.clf()
 for c in numerical_features:
     (df[c]/365).plot.hist(bins=25)
 
-    title= c.replace("Days", "in Years")
+    title= c.replace("Age upon Intake Days", "AuIY").replace("Age upon Outcome Days", "AuOY")
     plt.title(f"Distribution of {title}")
 
     plt.xlabel("Age (years)")
@@ -63,7 +67,7 @@ for c in numerical_features:
     plt.ylabel("Frequency")
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"2.2{title.replace(' ', '_')}.png")
+    plt.savefig(f"2.2{title}_hist.png")
     plt.clf()
     #plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
@@ -125,14 +129,17 @@ for c in numerical_features:
 # Plot updated histograms with 100 bins for each numerical feature (UPDATED)
 for c in numerical_features:
     (df[c]).plot.hist(bins=100)
-    plt.title(c)
+
+    title= c.replace("Age upon Intake Days", "AuID").replace("Age upon Outcome Days", "AuOD")
+    plt.title(f"Distribution of {title}")
+
     plt.xlabel("Age (days)")
     #plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
 
     plt.ylabel("Frequency")
     #plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"2.2{c.replace(' ', '_')}_updated.png")
+    plt.savefig(f"2.2{title}_updated_hist.png")
     plt.clf()
     #plt.show()
 ######
@@ -144,10 +151,13 @@ x= np.random.rand(500)
 y= np.random.rand(500)
 # Plot the data
 plt.scatter(x, y)
+
 plt.title("ScatterPlot")
+
 plt.xlabel("input")
 plt.ylabel("output")
-plt.savefig("2.2random_scatterplot.png")
+
+plt.savefig("2.2random_scatter.png")
 plt.clf()
 #plt.show()
 ######
@@ -158,9 +168,12 @@ x= df[numerical_features[0]]
 y= df[numerical_features[1]]
 # giving numerical_features graph boundaries
 plt.scatter(x, y)
+
 plt.title(numerical_features[0] + " vs " + numerical_features[1])
+
 plt.xlabel(numerical_features[0])
 plt.ylabel(numerical_features[1])
+
 plt.savefig("2.2num_feat_scatterplot.png")
 plt.clf()
 #plt.show()

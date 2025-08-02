@@ -15,34 +15,17 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Read the dataset into a DataFrame and look at the data
 df= pd.read_csv("../2_shared_data/review_dataset.csv")
 # reading the dataset and saving it as df to call it throughout the program
-######## DONE
-
-
-########
 print(f"The Shape of the Data Set is (columns, rows): {df.shape}\n")
-######## DONE
+print(f"First 10 rows of dataset:\n{df.head(10)}\n")
 
-
-########
-# Print the first ten rows of the dataset
-print(f"First 10 rows of data:\n{df.head(10)}\n")
-######## DONE
-
-
-########
-print("Number of Columns their name, datatype, and non-null:")
+print("Number of Columns, their name, datatype, and non-null:")
 print(f"{df.info()}\n")
-######## DONE
 
-
-########
 print(f"Common statistics for data:\n{df.describe()}\n")
-######## DONE
 
-
-########
 print(f"All the dataset columns:\n{df.columns}\n")
 ######## DONE
+
 
 
 ########
@@ -62,17 +45,19 @@ for c in numerical_features:
     print(f"Values Counts:\n{df[c].value_counts(bins=20, sort=False)}\n")
     # Plot bar charts based on value_counts (alternative plot method)
     df[c].value_counts(bins=20, sort=False).plot(kind="bar", alpha=1.0, rot=45, color="#CC5500")
-    #title = c.replace("Days", "in Years")
+
+    title= c.replace("Age upon Intake Days", "AuID").replace("Age upon Outcome Days", "AuOD")
+
     plt.tight_layout()
     plt.title(c)
 
-    plt.xlabel("Age (years)")
+    plt.xlabel("Age (days)")
     plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
 
     plt.ylabel("Frequency")
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"2.3{c.replace(' ', '_')}.png")
+    plt.savefig(f"2_3{title}_ValueCounts.png")
     plt.clf()
     #plt.show()
 ######## DONE
@@ -81,27 +66,30 @@ for c in numerical_features:
 ########
 for c in numerical_features:
     # Drop values beyond 90% of max()
-    dropIndexes = df[df[c] > df[c].max() * 9/10].index
+    dropIndexes= df[df[c] > df[c].max() * 9/10].index
     df.drop(dropIndexes, inplace=True)
 ######## DONE
 
 
 ######## UPDATED value counts
 for c in numerical_features:
-    print(f"(Column) Data name UPDATED:\n{c},")
+    print(f"(Column) Data UPDATED:\n{c},")
     print(f"Values Counts:\n{df[c].value_counts(bins=20, sort=False)}\n")
+
     df[c].value_counts(bins=20, sort=False).plot(kind="bar", alpha=1.0, rot=45, color="#CC5500")
-    # title = c.replace("Days", "in Years")
+
+    title= c.replace("Age upon Intake Days", "AuID").replace("Age upon Outcome Days", "AuOD")
+
     plt.tight_layout()
     plt.title(c)
 
-    plt.xlabel("Age (years)")
+    plt.xlabel("Age (days)")
     plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
 
     plt.ylabel("Frequency")
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"2.3{c.replace(' ', '_')}_updated.png")
+    plt.savefig(f"2_3{title}_UPDATED_ValueCounts.png")
     plt.clf()
     # plt.show()
 ######## DONE
@@ -109,7 +97,7 @@ for c in numerical_features:
 
 ######## 1.3.4. Drop Rows with Missing Values
 # Drop all rows that are missing values
-df_missing_dropped = df.dropna()
+df_missing_dropped= df.dropna()
 print(df_missing_dropped.shape)
 # Checking if missing values were dropped: print the total number of rows for each feature that has missing values
 print(df_missing_dropped.isna().sum())

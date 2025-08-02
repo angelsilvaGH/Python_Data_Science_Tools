@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib.ticker import MaxNLocator
 from sklearn.impute import SimpleImputer
 # import the dataset csv file with the required data
-df= pd.read_csv("review_dataset.csv")
+df= pd.read_csv("../2_shared_data/review_dataset.csv")
 
 
 # analyzing Austin animal shelter data
@@ -45,7 +45,7 @@ plt.xlabel("Age (years)")
 plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=10))
 plt.ylabel("Frequency")
 plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
-plt.savefig(f"{title.replace(' ', '_')}_single.png")
+plt.savefig(f"2.2{title.replace(' ', '_')}_single.png")
 plt.clf()
 #plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
@@ -63,7 +63,7 @@ for c in numerical_features:
     plt.ylabel("Frequency")
     plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"{title.replace(' ', '_')}.png")
+    plt.savefig(f"2.2{title.replace(' ', '_')}.png")
     plt.clf()
     #plt.show() # I want to avoid opening data while running, saving the data as a png file to view after
 
@@ -132,7 +132,7 @@ for c in numerical_features:
     plt.ylabel("Frequency")
     #plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=10))
 
-    plt.savefig(f"{c.replace(' ', '_')}_updated.png")
+    plt.savefig(f"2.2{c.replace(' ', '_')}_updated.png")
     plt.clf()
     #plt.show()
 ######
@@ -147,7 +147,7 @@ plt.scatter(x, y)
 plt.title("ScatterPlot")
 plt.xlabel("input")
 plt.ylabel("output")
-plt.savefig("random_scatterplot.png")
+plt.savefig("2.2random_scatterplot.png")
 plt.clf()
 #plt.show()
 ######
@@ -161,7 +161,14 @@ plt.scatter(x, y)
 plt.title(numerical_features[0] + " vs " + numerical_features[1])
 plt.xlabel(numerical_features[0])
 plt.ylabel(numerical_features[1])
-plt.savefig("num_feat_scatterplot.png")
+plt.savefig("2.2num_feat_scatterplot.png")
 plt.clf()
 #plt.show()
 ########
+
+
+# updating min and max with taken out unwanted data
+for c in numerical_features:
+    title= c.replace("Days", "in Years")
+    print(f"\n{title}, min & max age:")
+    print(f"min: {df[c].min()/365} max: {df[c].max()/365}")
